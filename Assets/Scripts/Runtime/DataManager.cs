@@ -11,7 +11,7 @@ public class DataManager : MonoBehaviour
     public int HighScore => data.highScore;
 
     private SaveData data = new SaveData();
-    private string SavePath => Path.Combine(Application.persistentDataPath, "breakout-save.json");
+    private string SavePath => Path.Combine(Application.persistentDataPath, "data-persistence-save.json");
 
     [Serializable]
     private class SaveData
@@ -19,6 +19,11 @@ public class DataManager : MonoBehaviour
         public string playerName = "";
         public string highScoreName = "";
         public int highScore;
+        public bool hasSelectedColor;
+        public float selectedColorR = 0.2f;
+        public float selectedColorG = 0.55f;
+        public float selectedColorB = 1f;
+        public float selectedColorA = 1f;
     }
 
     private void Awake()
@@ -51,6 +56,22 @@ public class DataManager : MonoBehaviour
         data.highScoreName = string.IsNullOrWhiteSpace(data.playerName) ? "Player" : data.playerName;
         Save();
         return true;
+    }
+
+    public void SetSelectedColor(Color color)
+    {
+        data.hasSelectedColor = true;
+        data.selectedColorR = color.r;
+        data.selectedColorG = color.g;
+        data.selectedColorB = color.b;
+        data.selectedColorA = color.a;
+        Save();
+    }
+
+    public bool TryGetSelectedColor(out Color color)
+    {
+        color = new Color(data.selectedColorR, data.selectedColorG, data.selectedColorB, data.selectedColorA);
+        return data.hasSelectedColor;
     }
 
     public void Save()
