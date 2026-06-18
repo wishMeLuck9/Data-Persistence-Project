@@ -68,13 +68,13 @@ public class GameController : MonoBehaviour
 
     public void GameOver(bool won)
     {
-        if (!roundActive && ball.velocity == Vector2.zero)
+        if (!roundActive && ball.linearVelocity == Vector2.zero)
         {
             return;
         }
 
         roundActive = false;
-        ball.velocity = Vector2.zero;
+        ball.linearVelocity = Vector2.zero;
         ball.transform.position = new Vector3(0f, -3.3f, 0f);
 
         bool newBest = DataManager.Instance.TrySaveHighScore(score);
@@ -99,7 +99,7 @@ public class GameController : MonoBehaviour
         messageText.text = "";
         yield return null;
         Vector2 direction = new Vector2(Random.Range(-0.6f, 0.6f), 1f).normalized;
-        ball.velocity = direction * ballSpeed;
+        ball.linearVelocity = direction * ballSpeed;
     }
 
     private void CreateBrickRows()
